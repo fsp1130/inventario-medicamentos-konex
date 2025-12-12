@@ -494,7 +494,7 @@ Este proyecto fue desarrollado como prueba técnica para **Konex**.
 ## 👨‍💻 Autor
 
 **Frank Esteban Soto Paz**
-- GitHub: [https://github.com/fsp1130
+- GitHub: https://github.com/fsp1130
 - LinkedIn: www.linkedin.com/in/frank-esteban-soto-paz-9995b31a0
 - Email: Frankestebansoto@gmail.com
 
