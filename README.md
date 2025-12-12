@@ -452,19 +452,6 @@ curl -X POST http://localhost:8080/api/ventas \
 
 ---
 
-## 📸 Capturas de Pantalla
-
-### Panel de Medicamentos
-![Medicamentos](docs/screenshots/medicamentos.png)
-
-### Realizar Venta
-![Venta](docs/screenshots/venta.png)
-
-### Consulta de Ventas
-![Ventas](docs/screenshots/ventas.png)
-
----
-
 ## 🤝 Contribución
 
 Las contribuciones son bienvenidas. Para contribuir:
@@ -507,35 +494,11 @@ Este proyecto fue desarrollado como prueba técnica para **Konex**.
 ## 👨‍💻 Autor
 
 **Tu Nombre**
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- LinkedIn: [Tu Perfil](https://linkedin.com/in/tu-perfil)
-- Email: tu-email@ejemplo.com
+- GitHub: [https://github.com/fsp1130
+- LinkedIn: www.linkedin.com/in/frank-esteban-soto-paz-9995b31a0
+- Email: Frankestebansoto@gmail.com
 
----
 
-## 🙏 Agradecimientos
 
-- [Spring Boot](https://spring.io/projects/spring-boot)
-- [Angular](https://angular.io/)
-- [PrimeNG](https://primeng.org/)
-- [Oracle](https://www.oracle.com/)
-- Konex - Por la oportunidad
 
----
 
-## 📚 Documentación Adicional
-
-- [Guía de Instalación Detallada](docs/INSTALLATION.md)
-- [Documentación de API](docs/API.md)
-- [Arquitectura del Sistema](docs/ARCHITECTURE.md)
-- [Guía de Contribución](docs/CONTRIBUTING.md)
-
----
-
-<div align="center">
-
-**⭐ Si este proyecto te fue útil, considera darle una estrella en GitHub ⭐**
-
-Desarrollado con ❤️ para Konex
-
-</div>
