@@ -1,0 +1,234 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+}
+
+// Sección de filtros
+.filtros-section {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+
+  .p-field {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #495057;
+    }
+
+    input {
+      width: 100%;
+    }
+  }
+}
+
+// Badges de estado
+.badge-success {
+  background-color: #28a745;
+  color: white;
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+// Utilidades
+.p-mb-3 {
+  margin-bottom: 1rem;
+}
+
+.p-mr-1 {
+  margin-right: 0.25rem;
+}
+
+.p-mr-2 {
+  margin-right: 0.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+// Estilos para el modal de venta
+.valor-total-venta {
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+
+  .total-amount {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+  }
+}
+
+// Estilos globales para modales y calendarios
+::ng-deep {
+  // Modal mejorado
+  .p-dialog {
+    .p-dialog-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 8px 8px 0 0;
+      
+      .p-dialog-title {
+        color: white;
+      }
+
+      .p-dialog-header-icon {
+        color: white;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 2rem;
+      max-height: 70vh;
+      overflow-y: auto;
+
+      .p-field {
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: #495057;
+        }
+      }
+
+      // Calendarios dentro del modal
+      .p-calendar {
+        width: 100%;
+        
+        .p-inputtext {
+          width: 100%;
+        }
+      }
+
+      // InputNumber dentro del modal
+      .p-inputnumber {
+        width: 100%;
+        
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .p-dialog-footer {
+      padding: 1.5rem 2rem;
+      background-color: #f8f9fa;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+  }
+
+  // Calendario popup
+  .p-datepicker {
+    z-index: 9999 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+
+    .p-datepicker-header {
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 8px 8px 0 0;
+
+      .p-datepicker-title {
+        font-weight: 600;
+      }
+
+      .p-datepicker-prev,
+      .p-datepicker-next {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+
+    table {
+      font-size: 0.875rem;
+      
+      td {
+        padding: 0.5rem;
+
+        > span {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  // Asegurar ancho completo de calendarios
+  .p-calendar {
+    width: 100%;
+
+    .p-inputtext {
+      width: 100%;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .filtros-section {
+    padding: 1rem;
+  }
+
+  ::ng-deep .p-dialog {
+    width: 95vw !important;
+    
+    .p-dialog-content {
+      padding: 1rem;
+    }
+  }
+
+  .valor-total-venta {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+
+    .total-amount {
+      font-size: 1.5rem;
+    }
+  }
+}
