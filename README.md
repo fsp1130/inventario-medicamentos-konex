@@ -162,7 +162,7 @@ Sistema completo de gestión de inventario y ventas de medicamentos desarrollado
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone https://github.com/fsp1130/inventario-medicamentos-konex.git
+git clone https://github.com/tu-usuario/inventario-medicamentos-konex.git
 cd inventario-medicamentos-konex
 ```
 
@@ -497,7 +497,6 @@ Este proyecto fue desarrollado como prueba técnica para **Konex**.
 - GitHub: [https://github.com/fsp1130
 - LinkedIn: www.linkedin.com/in/frank-esteban-soto-paz-9995b31a0
 - Email: Frankestebansoto@gmail.com
-
 
 
 
