@@ -1,0 +1,138 @@
+spring:
+  application:
+    name: inventario-medicamentos
+
+  # ==========================================
+  # CONFIGURACIÓN ORACLE DOCKER
+  # ==========================================
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
+    username: konex_user
+    password: konex_password
+    driver-class-name: oracle.jdbc.OracleDriver
+
+    # Configuración del pool de conexiones HikariCP
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # ==========================================
+  # CONFIGURACIÓN JPA / HIBERNATE
+  # ==========================================
+  jpa:
+    hibernate:
+      ddl-auto: update  # Crea/actualiza tablas automáticamente
+    show-sql: true      # Muestra las queries SQL en consola
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        format_sql: true  # Formatea el SQL para mejor legibilidad
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+          fetch_size: 20
+        order_inserts: true
+        order_updates: true
+    open-in-view: false  # Desactiva open-in-view para mejor rendimiento
+
+  # ==========================================
+  # CONFIGURACIÓN DE PAGINACIÓN
+  # ==========================================
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100
+        one-indexed-parameters: false
+
+# ==========================================
+# CONFIGURACIÓN DEL SERVIDOR
+# ==========================================
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+
+# ==========================================
+# CONFIGURACIÓN DE LOGGING
+# ==========================================
+logging:
+  level:
+    root: INFO
+    com.konex.inventario: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: DEBUG
+    org.springframework.jdbc.core: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# ==========================================
+# CONFIGURACIÓN DE ACTUATOR (Monitoreo)
+# ==========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+---
+# ==========================================
+# PERFIL DE DESARROLLO (H2)
+# Para usar: mvn spring-boot:run -Dspring-boot.run.profiles=dev
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+---
+# ==========================================
+# PERFIL DE TESTING
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
