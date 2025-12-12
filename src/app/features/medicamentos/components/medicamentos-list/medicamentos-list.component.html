@@ -1,0 +1,307 @@
+<div class="card">
+  <h2>Gestión de Medicamentos</h2>
+  
+  <div class="filtros-section">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-4">
+        <div class="p-field">
+          <label for="nombreFiltro">Nombre</label>
+          <input 
+            id="nombreFiltro" 
+            type="text" 
+            pInputText 
+            [(ngModel)]="nombreFiltro"
+            (keyup.enter)="aplicarFiltros()"
+            placeholder="Buscar por nombre"
+            class="p-inputtext-sm" 
+            style="width: 100%">
+        </div>
+      </div>
+      
+      <div class="p-col-12 p-md-4">
+        <div class="p-field">
+          <label for="laboratorioFiltro">Laboratorio</label>
+          <input 
+            id="laboratorioFiltro" 
+            type="text" 
+            pInputText 
+            [(ngModel)]="laboratorioFiltro"
+            (keyup.enter)="aplicarFiltros()"
+            placeholder="Buscar por laboratorio"
+            class="p-inputtext-sm" 
+            style="width: 100%">
+        </div>
+      </div>
+      
+      <div class="p-col-12 p-md-4">
+        <div class="p-field" style="margin-top: 1.75rem;">
+          <button 
+            pButton 
+            type="button" 
+            label="Buscar" 
+            icon="pi pi-search"
+            class="p-button-sm p-mr-2" 
+            (click)="aplicarFiltros()"></button>
+          <button 
+            pButton 
+            type="button" 
+            label="Limpiar" 
+            icon="pi pi-times"
+            class="p-button-sm p-button-secondary" 
+            (click)="limpiarFiltros()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón nuevo -->
+  <div class="p-mb-3">
+    <button 
+      pButton 
+      type="button" 
+      label="Nuevo Medicamento" 
+      icon="pi pi-plus"
+      class="p-button-success" 
+      (click)="nuevoMedicamento()"></button>
+  </div>
+
+  <!-- Tabla de medicamentos -->
+  <p-table 
+    [value]="medicamentos"
+    [lazy]="true"
+    [paginator]="true"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+    [(first)]="first"
+    (onLazyLoad)="cargarMedicamentos($event)"
+    [rowsPerPageOptions]="[5,10,20]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} medicamentos"
+    styleClass="p-datatable-sm"
+    [tableStyle]="{'min-width': '50rem'}">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th pSortableColumn="nombre">Nombre</th>
+        <th>Laboratorio</th>
+        <th>F. Fabricación</th>
+        <th>F. Vencimiento</th>
+        <th>Stock</th>
+        <th>Valor Unitario</th>
+        <th>Estado</th>
+        <th style="width: 200px">Acciones</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-medicamento>
+      <tr>
+        <td>{{ medicamento.id }}</td>
+        <td>{{ medicamento.nombre }}</td>
+        <td>{{ medicamento.laboratorio }}</td>
+        <td>{{ medicamento.fechaFabricacion | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ medicamento.fechaVencimiento | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ medicamento.cantidadStock }}</td>
+        <td>{{ medicamento.valorUnitario | currency }}</td>
+        <td>
+          <span 
+            [class]="medicamento.vencido ? 'badge-danger' : 'badge-success'">
+            {{ medicamento.vencido ? 'Vencido' : 'Vigente' }}
+          </span>
+        </td>
+        <td>
+          <button 
+            pButton 
+            type="button" 
+            icon="pi pi-shopping-cart"
+            class="p-button-rounded p-button-info p-button-sm p-mr-1"
+            [disabled]="medicamento.vencido || medicamento.cantidadStock === 0"
+            (click)="abrirModalVenta(medicamento)"
+            pTooltip="Vender"></button>
+          <button 
+            pButton 
+            type="button" 
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-warning p-button-sm p-mr-1"
+            (click)="editarMedicamento(medicamento)"
+            pTooltip="Editar"></button>
+          <button 
+            pButton 
+            type="button" 
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-sm"
+            (click)="eliminarMedicamento(medicamento)"
+            pTooltip="Eliminar"></button>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9" class="text-center">No se encontraron medicamentos</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog 
+  [(visible)]="displayDialog"
+  [header]="esNuevo ? 'Nuevo Medicamento' : 'Editar Medicamento'"
+  [modal]="true"
+  [style]="{width: '600px', 'max-height': '90vh'}"
+  [contentStyle]="{'overflow': 'auto', 'max-height': '70vh'}"
+  [draggable]="false"
+  [resizable]="false">
+  
+  <div *ngIf="medicamentoSeleccionado" class="p-fluid">
+    <div class="p-field p-mb-3">
+      <label for="nombre">Nombre *</label>
+      <input 
+        id="nombre" 
+        type="text" 
+        pInputText 
+        [(ngModel)]="medicamentoSeleccionado.nombre"
+        placeholder="Ej: Ibuprofeno 400mg"
+        required>
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="laboratorio">Laboratorio *</label>
+      <input 
+        id="laboratorio" 
+        type="text" 
+        pInputText 
+        [(ngModel)]="medicamentoSeleccionado.laboratorio"
+        placeholder="Ej: Bayer"
+        required>
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="fechaFabricacion">Fecha de Fabricación *</label>
+      <p-calendar 
+        [(ngModel)]="medicamentoSeleccionado.fechaFabricacion"
+        [showIcon]="true"
+        dateFormat="yy-mm-dd"
+        [maxDate]="maxDate"
+        [appendTo]="'body'"
+        [showButtonBar]="true"
+        inputId="fechaFabricacion"
+        placeholder="Seleccione fecha"
+        styleClass="w-full"></p-calendar>
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="fechaVencimiento">Fecha de Vencimiento *</label>
+      <p-calendar 
+        [(ngModel)]="medicamentoSeleccionado.fechaVencimiento"
+        [showIcon]="true"
+        dateFormat="yy-mm-dd"
+        [minDate]="minDate"
+        [appendTo]="'body'"
+        [showButtonBar]="true"
+        inputId="fechaVencimiento"
+        placeholder="Seleccione fecha"
+        styleClass="w-full"></p-calendar>
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="cantidadStock">Cantidad en Stock *</label>
+      <p-inputNumber 
+        [(ngModel)]="medicamentoSeleccionado.cantidadStock"
+        [min]="0"
+        [showButtons]="true"
+        inputId="cantidadStock"
+        placeholder="0"></p-inputNumber>
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="valorUnitario">Valor Unitario *</label>
+      <p-inputNumber 
+        [(ngModel)]="medicamentoSeleccionado.valorUnitario"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        [min]="0.01"
+        inputId="valorUnitario"
+        placeholder="0.00"></p-inputNumber>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      type="button" 
+      label="Cancelar" 
+      icon="pi pi-times"
+      class="p-button-secondary" 
+      (click)="displayDialog=false"></button>
+    <button 
+      pButton 
+      type="button" 
+      label="Guardar" 
+      icon="pi pi-check"
+      (click)="guardarMedicamento()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Dialog para realizar venta -->
+<p-dialog 
+  [(visible)]="displayVentaDialog"
+  header="Realizar Venta"
+  [modal]="true"
+  [style]="{width: '400px'}"
+  [draggable]="false"
+  [resizable]="false">
+  
+  <div *ngIf="medicamentoParaVenta" class="p-fluid">
+    <div class="p-mb-3">
+      <strong>Medicamento:</strong> {{ medicamentoParaVenta.nombre }}
+    </div>
+    <div class="p-mb-3">
+      <strong>Stock disponible:</strong> {{ medicamentoParaVenta.cantidadStock }}
+    </div>
+    <div class="p-mb-3">
+      <strong>Valor unitario:</strong> {{ medicamentoParaVenta.valorUnitario | currency }}
+    </div>
+    
+    <div class="p-field p-mb-3">
+      <label for="cantidad">Cantidad *</label>
+      <p-inputNumber 
+        [(ngModel)]="cantidadVenta"
+        [min]="1"
+        [max]="medicamentoParaVenta.cantidadStock"
+        [showButtons]="true"
+        inputId="cantidad"
+        (ngModelChange)="calcularValorTotal()"></p-inputNumber>
+    </div>
+    
+    <div class="p-mb-3 valor-total-venta">
+      <strong>Valor Total:</strong> 
+      <span class="total-amount">{{ valorTotalVenta | currency }}</span>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button 
+      pButton 
+      type="button" 
+      label="Cancelar" 
+      icon="pi pi-times"
+      class="p-button-secondary" 
+      (click)="displayVentaDialog=false"></button>
+    <button 
+      pButton 
+      type="button" 
+      label="Confirmar Venta" 
+      icon="pi pi-check"
+      class="p-button-success"
+      (click)="confirmarVenta()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Mensajes de notificación -->
+<p-toast></p-toast>
+
+<!-- Diálogo de confirmación -->
+<p-confirmDialog></p-confirmDialog>
